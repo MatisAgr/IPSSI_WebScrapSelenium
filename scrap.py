@@ -237,22 +237,25 @@ def extract_card_data(card, card_index):
     # Extraction de l'adresse
     try:
         location_icon_element = card.find_element(By.CSS_SELECTOR, "svg[data-icon-name='regular/location-dot']")
-        address_group_div = location_icon_element.find_element(By.XPATH, "./ancestor::div[@class='gap-8 flex'][1]")
-        address_text_container = address_group_div.find_element(By.CSS_SELECTOR, "div.flex.flex-wrap.gap-x-4")
-        address_lines_elements = address_text_container.find_elements(By.TAG_NAME, "p")
         
-        if len(address_lines_elements) >= 1:
-            data["Rue"] = address_lines_elements[0].text.strip()
         
-        if len(address_lines_elements) >= 2:
-            cp_ville_text = address_lines_elements[1].text.strip()
+        parent_div = location_icon_element.find_element(By.XPATH, "./ancestor::div[3]")
+        address_paragraphs = parent_div.find_elements(
+            By.XPATH, ".//div[contains(@class, 'flex-wrap')]/p"
+        )        
+        
+        if len(address_paragraphs) >= 1:
+            data["Rue"] = address_paragraphs[0].text.strip()
+        
+        if len(address_paragraphs) >= 2:
+            cp_ville_text = address_paragraphs[1].text.strip()
             match = re.match(r"(\d{5})\s*(.*)", cp_ville_text)
             if match:
                 data["Code postal"], data["Ville"] = match.group(1), match.group(2).strip()
             else:
                 data["Ville"] = cp_ville_text
-        elif len(address_lines_elements) == 1 and not data["Rue"]:
-            cp_ville_text = address_lines_elements[0].text.strip()
+        elif len(address_paragraphs) == 1 and not data["Rue"]:
+            cp_ville_text = address_paragraphs[0].text.strip()
             match = re.match(r"(\d{5})\s*(.*)", cp_ville_text)
             if match:
                 data["Code postal"], data["Ville"] = match.group(1), match.group(2).strip()
