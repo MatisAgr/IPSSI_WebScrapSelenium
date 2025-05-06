@@ -235,25 +235,13 @@ def extract_card_data(card, card_index, driver, wait_for_results_page):
         data["Prix estimé"] = extracted_prices
         debug_print(f"C{card_index+1}: Prix extraits: {data['Prix estimé']}", level="info")
         
-        # S'assurer que nous sommes de retour sur la page de résultats et qu'elle est chargée.
-        # La fonction extract_prices_from_profile_page gère maintenant le retour à l'onglet/page d'origine.
-        # Il faut s'assurer que la page de résultats est toujours dans l'état attendu.
-        # Une petite attente pour la stabilisation peut être utile si des éléments sont rechargés.
         if driver.current_url != current_search_page_url:
             debug_print(f"C{card_index+1}: URL actuelle ({driver.current_url}) différente de l'URL de recherche sauvegardée ({current_search_page_url}). Tentative de retour explicite.", level="warning")
             driver.get(current_search_page_url)
 
-        try:
-            # Attendre que le conteneur des résultats soit à nouveau présent sur la page de recherche
-            results_container_selector = "div[data-test-id='hcp-results']"
-            wait_for_results_page.until(
-                EC.presence_of_element_located((By.CSS_SELECTOR, results_container_selector))
-            )
-            time.sleep(1) # Petite pause pour la stabilisation
-            debug_print(f"C{card_index+1}: Retour à la page de résultats confirmé.", level="success")
-        except TimeoutException:
-            debug_print(f"C{card_index+1}: Timeout en attendant le conteneur de résultats après l'extraction des prix. La page de résultats n'est peut-être pas correctement rechargée.", level="error")
-            # Cela pourrait causer des problèmes pour trouver la carte suivante.
+            time.sleep(1)  # Attente fixe de 3 secondes après navigation
+            debug_print(f"C{card_index+1}: Attente fixe appliquée après retour à la page de résultats.", level="info")
+        
     elif data["Lien Profil"] == "N/A":
         data["Prix estimé"] = "N/A (pas de lien profil)"
     else: # Lien profil non Doctolib
