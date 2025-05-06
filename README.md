@@ -1,4 +1,12 @@
+<div align="center">
+
 # Doctolib Scraper
+
+[![wakatime](https://wakatime.com/badge/user/a16f794f-b91d-4818-8dfc-d768ce605ece/project/b93013d7-aceb-45a4-a283-f5d036510e03.svg)](https://wakatime.com/badge/user/a16f794f-b91d-4818-8dfc-d768ce605ece/project/b93013d7-aceb-45a4-a283-f5d036510e03) +
+[![wakatime](https://wakatime.com/badge/user/a16f794f-b91d-4818-8dfc-d768ce605ece/project/665d585c-0366-499e-8389-9f0e4e5356c4.svg)](https://wakatime.com/badge/user/a16f794f-b91d-4818-8dfc-d768ce605ece/project/665d585c-0366-499e-8389-9f0e4e5356c4)
+
+</div>
+
 
 Ce projet contient un script Python conçu pour scraper des informations sur les praticiens de santé à partir du site Doctolib.fr. Il utilise Selenium pour automatiser la navigation et l'extraction de données.
 
